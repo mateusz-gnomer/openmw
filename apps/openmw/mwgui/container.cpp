@@ -2,6 +2,7 @@
 
 #include <MyGUI_InputManager.h>
 #include <MyGUI_Button.h>
+#include <cstdlib>
 
 #include "../mwbase/environment.hpp"
 #include "../mwbase/world.hpp"
@@ -12,6 +13,7 @@
 #include "../mwmechanics/actorutil.hpp"
 
 #include "../mwworld/class.hpp"
+#include "../mwclass/container.hpp"
 
 #include "../mwmechanics/pickpocket.hpp"
 #include "../mwmechanics/creaturestats.hpp"
@@ -153,6 +155,29 @@ namespace MWGui
         mItemView->resetScrollBars();
 
         MWBase::Environment::get().getWindowManager()->setKeyFocusWidget(mCloseButton);
+
+
+        if(MWClass::Container::isAPlant(mPtr)){
+
+        	onTakeAllButtonClicked(mTakeButton);
+
+        	if(mSortModel->getItemCount() == 0 || mSortModel->getItem(0).mCount ==  0)
+        	{
+        		 MWBase::Environment::get().getWindowManager()->messageBox("There is nothing to harvest");
+        		 return;
+        	}
+
+            const ItemStack& item = mSortModel->getItem(0);
+            int count = item.mCount;
+
+            std::stringstream ss;
+            ss << count;
+            std::string str = ss.str();
+
+            MWBase::Environment::get().getWindowManager()->messageBox("You have harvested: " + str + " " + item.mBase.getClass().getName(item.mBase));
+
+            return;
+        }
 
         setTitle(container.getClass().getName(container));
     }

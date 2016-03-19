@@ -255,6 +255,14 @@ namespace MWClass
         return ref->mBase->mWeight;
     }
 
+    float Container::getCapacity (const MWWorld::ConstPtr& ptr) const
+    {
+        const MWWorld::LiveCellRef<ESM::Container> *ref =
+            ptr.get<ESM::Container>();
+
+        return ref->mBase->mWeight;
+    }
+
     float Container::getEncumbrance (const MWWorld::Ptr& ptr) const
     {
         return getContainerStore (ptr).getWeight();
@@ -314,5 +322,33 @@ namespace MWClass
 
         dynamic_cast<const ContainerCustomData&> (*ptr.getRefData().getCustomData()).mContainerStore.
             writeState (state2.mInventory);
+    }
+
+    bool Container::isAPlant (const MWWorld::ConstPtr &ptr)
+    {
+    	if(ptr.getTypeName() != typeid(ESM::Container).name())
+    	{
+    		return false;
+    	}
+
+        const MWWorld::LiveCellRef<ESM::Container> *ref =  ptr.get<ESM::Container>();
+
+
+        std::string flora = "flora_";
+        std::string modelName = ref->mBase->mModel;
+
+        std::cout << modelName << std::endl;
+
+        char napis[flora.length()+1];
+        for(unsigned int i = 0; i<modelName.length(); i++){
+        	napis[i]= tolower(modelName[i]);
+        }
+        modelName = napis;
+
+    	if(modelName.find(flora) != std::string::npos)
+    	{
+    		return true;
+    	}
+    	return false;
     }
 }

@@ -10,6 +10,8 @@ namespace MWClass
             void ensureCustomData (const MWWorld::Ptr& ptr) const;
 
 
+
+
             virtual MWWorld::Ptr copyToCellImpl(const MWWorld::ConstPtr &ptr, MWWorld::CellStore &cell) const;
 
         public:
@@ -70,6 +72,13 @@ namespace MWClass
             virtual void restock (const MWWorld::Ptr &ptr) const;
 
             virtual std::string getModel(const MWWorld::ConstPtr &ptr) const;
+
+            static bool isAPlant (const MWWorld::ConstPtr &ptr) ;
+
+            virtual float getCapacity (const MWWorld::ConstPtr& ptr) const;
+            ///< Return total weight that fits into the object. Throws an exception, if the object can't
+            /// hold other objects.
+
     };
 }
 
